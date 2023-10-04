@@ -12,6 +12,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner')
 
 
+class LessonStatusAdmin(admin.ModelAdmin):
+    list_display = ('lesson', 'user', 'status')
+
+
 admin.site.register(Product, ProductAdmin)
+
+admin.site.register(LessonStatus, LessonStatusAdmin)
 
 

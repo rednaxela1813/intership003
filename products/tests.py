@@ -81,14 +81,13 @@ class LessonStatusModelTest(TestCase):
         self.assertEqual(self.lesson_status.lesson.product.owner.email, 'test@email.com')
 
 
-
 class ProductSerializerTest(TestCase):
     def test_product_serialization(self):
         CustomUser = get_user_model()
         self.user = CustomUser.objects.create(username='testuser')
         self.product = Product.objects.create(name='Test Product', owner=self.user)
         serializer = ProductSerializer(self.product)
-        expected_data = {'name': 'Test Product', 'owner': self.user.id, 'access': [], 'lessons': []}
+        expected_data = {'name': 'Test Product', 'owner': self.user.username, 'access': [], 'lessons': []}
         self.assertEqual(serializer.data, expected_data)
 
 
@@ -101,7 +100,7 @@ class LessonSerializerTest(TestCase):
                                             duration=60, product=self.product)
         serializer = LessonSerializer(self.lesson)
         expected_data = {'name': 'Test Lesson', 'link': 'http://example.com',\
-                         'duration': 60, 'product': self.product.id}
+                         'duration': 60, 'lesson_status': []}
         self.assertEqual(serializer.data, expected_data)
 
 
@@ -114,7 +113,7 @@ class LessonStatusSerializerTest(TestCase):
                                             duration=60, product=self.product)
         self.lesson_status = LessonStatus.objects.create(lesson=self.lesson, user=self.user, time_watched=10)
         serializer = LessonStatusSerializer(self.lesson_status)
-        expected_data = {'lesson': self.lesson.id, 'user': self.user.id, 'status': False, 'time_watched': 10}
+        expected_data = {'status': False, 'time_watched': 10}
         self.assertEqual(serializer.data, expected_data)
 
 
